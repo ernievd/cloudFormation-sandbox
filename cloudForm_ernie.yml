@@ -5,7 +5,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-1a
-      ImageId: ami-a4c7edb2 #-- This is a Linux AMI
+      ImageId: ami-a4c7edb2 #-- This is a my base Linux AMI with no ports open
       InstanceType: t2.micro
       KeyName: udemy-ec2
       UserData:
@@ -13,7 +13,9 @@ Resources:
            #!/bin/bash
            touch /home/ernie.txt
            echo "hello" > /home/ernie44.txt
-
+    Tags:
+      - Key: Name
+        Value: webserver
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:

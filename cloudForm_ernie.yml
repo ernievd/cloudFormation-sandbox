@@ -12,7 +12,7 @@ Resources:
         Fn::Base64: |
            #!/bin/bash
            touch /home/ernie.txt
-           echo "hello" > /home/text2.txt
+           echo "hello" > /home/ernie2.txt
 
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup

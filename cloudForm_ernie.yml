@@ -1,13 +1,26 @@
-# Cli command : aws cloudformation create-stack --stack-name ernie_stackTemplate1 --template-body file:~/cloudRun/cloudForm_ernie.yml --parameters file:~/cloudRun/parameters.json
+# Cli command : aws --region us-east-1 cloudformation create-stack --stack-name ernie_stackTemplate1 --template-body file://~/cloudRun/cloudForm_ernie.yml
 AWSTemplateFormatVersion: "2010-09-09"
-  #Description: "AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00"
+Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00
+
+Parameters:
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
 Resources:
-  MyInstance:
+  EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-1a
-      ImageId: ami-a4c7edb2 #-- This is a my base Linux AMI with no ports open
+      ImageId: ami-a4c7edb2 #-- This is my base Linux AMI with no ports open
       InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
       KeyName: udemy-ec2
       UserData:
         Fn::Base64: |
@@ -17,7 +30,8 @@ Resources:
       Tags:
         - Key: Name
           Value: webserver
-  WebServerSecurityGroup:
+
+  InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Enable HTTP access via port 80 and SSH access via port 22"
@@ -28,6 +42,8 @@ Resources:
         ToPort: '80'
       - CidrIp: 74.94.81.157/32
         #CidrIp: !Ref SSHLocation
+        #CidrIp:
+           #Ref: SSHLocation
         FromPort: '22'
         IpProtocol: tcp
         ToPort: '22'

@@ -25,7 +25,8 @@ Resources:
         FromPort: '80'
         IpProtocol: tcp
         ToPort: '80'
-      - CidrIp: !Ref SSHLocation
+      - CidrIp: 74.94.81.157/32
+        #CidrIp: !Ref SSHLocation
         FromPort: '22'
         IpProtocol: tcp
         ToPort: '22'

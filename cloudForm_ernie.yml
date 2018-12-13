@@ -25,9 +25,14 @@ Resources:
       KeyName: udemy-ec2
       UserData:
         Fn::Base64: |
-           #!/bin/bash
-           touch /home/ernie.txt
-           echo "hello" > /home/ernie44.txt
+          # get admin privileges
+          sudo su
+
+          # install httpd (Linux 2 version)
+          yum update                        # for Amazon Linux 2
+          yum install -y httpd.x86_64       # for Amazon Linux 2
+          systemctl start httpd.service     # for Amazon Linux 2
+          systemctl enable httpd.service    # for Amazon Linux 2
       Tags:
         - Key: Name
           Value: webserver

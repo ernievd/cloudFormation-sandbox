@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-    Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.0
+  Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.0
 Resources:
   MyInstance:
     Type: AWS::EC2::Instance

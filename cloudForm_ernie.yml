@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+    Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.0
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1a
+      ImageId: ami-a4c7edb2 #-- This is a Linux AMI
+      InstanceType: t2.micro
+      KeyName: udemy-ec2
+      UserData:
+        Fn::Base64: |
+           #!/bin/bash
+           touch /home/ernie.txt
+           echo "hello" > /home/text2.txt
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enable HTTP access via port 80 + SSH access"
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: '80'
+        IpProtocol: tcp
+        ToPort: '80'
+      - CidrIp: !Ref SSHLocation
+        FromPort: '22'
+        IpProtocol: tcp
+        ToPort: '22'

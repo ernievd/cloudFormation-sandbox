@@ -1,5 +1,6 @@
+# Cli command : aws cloudformation create-stack --stack-name ernie_stackTemplate1 --template-body file:~/cloudRun/cloudForm_ernie.yml --parameters file:~/cloudRun/parameters.json
 AWSTemplateFormatVersion: "2010-09-09"
-  Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.0
+  #Description: "AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00"
 Resources:
   MyInstance:
     Type: AWS::EC2::Instance
@@ -13,9 +14,9 @@ Resources:
            #!/bin/bash
            touch /home/ernie.txt
            echo "hello" > /home/ernie44.txt
-    Tags:
-      - Key: Name
-        Value: webserver
+      Tags:
+        - Key: Name
+          Value: webserver
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:

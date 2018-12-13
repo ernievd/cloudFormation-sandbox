@@ -1,4 +1,5 @@
-# Cli command : aws --region us-east-1 cloudformation create-stack --stack-name ernie_stackTemplate1 --template-body file://~/cloudRun/cloudForm_ernie.yml
+# Cli launch command : aws --region us-east-1 cloudformation create-stack --stack-name ernieStackTemplate1 --template-body file://~/cloudRun/cloudForm_ernie.yml
+# Cli delete command : aws --region us-east-1 cloudformation delete-stack --stack-name ernieStackTemplate1
 AWSTemplateFormatVersion: "2010-09-09"
 Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00
 

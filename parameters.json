@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "KeyNameEVD",
+    "ParameterValue": "udemy-ec2"
+  },
+  {
+    "ParameterKey": "InstanceTypeEVD",
+    "ParameterValue": "t2.micro"
+  }
+]

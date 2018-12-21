@@ -1,1 +1,85 @@
-#Just an empty file
+# Cli launch command : aws --region us-east-1 cloudformation create-stack --stack-name ernieStackTemplate1 --template-body file://~/cloudRun/cloudForm_ernie.yml
+# Cli delete command : aws --region us-east-1 cloudformation delete-stack --stack-name ernieStackTemplate1
+AWSTemplateFormatVersion: "2010-09-09"
+Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00
+
+Resources:
+  CFDDBucket:
+      Type: AWS::S3::Bucket
+      Properties: {}
+
+  ErnieEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1a
+      #ImageId: ami-a4c7edb2 #-- This is my base Linux AMI with no ports open
+      ImageId:  ami-a4c7edb2
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: udemy-ec2
+#      UserData:
+#        Fn::Base64: !Sub |
+#          #!/bin/bash
+#          cd ~
+#          echo "hello" > hello.txt
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -ex
+          touch /home/ernie.txt
+          echo "hello" > /home/ernie44.txt
+          sudo su
+          yum install -y httpd
+          echo "<html>I love YAML CloudFormation xmas!!</html>" > /var/www/html/index.html
+          cd /var/www/html
+          chmod 755 index.html
+          service httpd start
+          chkconfig httpd on
+
+
+#        Fn::Base64:                                # YAML makes userdata much cleaner
+#          !Sub |
+#              #!/bin/bash -ex
+#              yum install -y httpd;
+#              echo "<html>I love YAML CloudFormation!!</html>" > /var/www/html/index.html;
+#              cd /var/www/html;
+#              chmod 755 index.html;
+#              service httpd start;
+#              chkconfig httpd on;
+#          sudo su
+#          yum update –y
+#          yum install -y httpd24
+#          service httpd start
+#          chkconfig httpd on
+      Tags:
+        - Key: Name
+          Value: webserver
+        - Key: Owner
+          Value: Ernie
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ErnieSecurityGroup
+      GroupDescription: Allow http to client host
+      #VpcId: vpc-29a70f53
+      # Ref: myVPC
+      #vpc_subnet_id
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 74.94.81.157/32
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 74.94.81.157/32
+#      SecurityGroupEgress:
+#        - IpProtocol: tcp
+#          FromPort: 80
+#          ToPort: 80
+#          CidrIp: 0.0.0.0/0
+#          GroupId:
+#            Fn::GetAtt:
+#              VPC
+#              DefaultSecurityGroup

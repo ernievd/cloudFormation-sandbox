@@ -3,6 +3,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: AWS CloudFormation Template Trial for Ernie Van Duyne Version 1.00
 
+# note that parameters are what is asked of the user in the user interface when the stack is created from this template
 Parameters:
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
@@ -13,6 +14,9 @@ Parameters:
     AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 
+Mappings:     # Like a dropdown/lookup table
+
+Conditions: # like checking if the stack is to build a dev or prod environment and building according to those conditions
 Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -25,14 +29,11 @@ Resources:
       KeyName: udemy-ec2
       UserData:
         Fn::Base64: |
-          # get admin privileges
-          sudo su
-
-          # install httpd (Linux 2 version)
-          yum update                        # for Amazon Linux 2
-          yum install -y httpd.x86_64       # for Amazon Linux 2
-          systemctl start httpd.service     # for Amazon Linux 2
-          systemctl enable httpd.service    # for Amazon Linux 2
+            sudo su
+            yum update –y
+            yum install -y httpd24
+            service httpd start
+            chkconfig httpd on
       Tags:
         - Key: Name
           Value: webserver

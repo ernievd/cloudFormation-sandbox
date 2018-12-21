@@ -14,9 +14,9 @@ Parameters:
     AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 
-Mappings:     # Like a dropdown/lookup table
+#Mappings:     # Like a dropdown/lookup table
 
-Conditions: # like checking if the stack is to build a dev or prod environment and building according to those conditions
+#Conditions: # like checking if the stack is to build a dev or prod environment and building according to those conditions
 Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -29,11 +29,16 @@ Resources:
       KeyName: udemy-ec2
       UserData:
         Fn::Base64: |
-            sudo su
-            yum update –y
-            yum install -y httpd24
-            service httpd start
-            chkconfig httpd on
+          #!/bin/bash -ex
+          touch /home/ernie.txt
+          echo "hello" > /home/ernie44.txt
+          sudo su
+          yum install -y httpd
+          echo "<html>I love YAML CloudFormation xmas!!</html>" > /var/www/html/index.html
+          cd /var/www/html
+          chmod 755 index.html
+          service httpd start
+          chkconfig httpd on
       Tags:
         - Key: Name
           Value: webserver
